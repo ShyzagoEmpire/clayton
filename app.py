@@ -449,8 +449,8 @@ class Clayton:
                         f"{Fore.WHITE + Style.BRIGHT} | {Style.RESET_ALL}"
                         f"{Fore.CYAN + Style.BRIGHT}[ {name} ]{Style.RESET_ALL}"
                     )
-                    await self.user_daily_claim(query=query)
                     await self.authorization(query=query)
+                    await self.user_daily_claim(query=query)
 
                 for (name, query) in accounts:
                     self.print_timestamp(
