@@ -1,0 +1,5 @@
+aiohttp==3.10.9
+Brotli==1.1.0
+colorama==0.4.6
+fake-useragent==1.5.1
+Telethon==1.36.0
