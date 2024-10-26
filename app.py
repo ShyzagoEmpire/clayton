@@ -353,17 +353,15 @@ class Clayton:
 
     async def tile_start(self, query: str):
         url = 'https://tonclayton.fun/api/game/start'
-        data = json.dumps({'score':score,'multiplier':1})
         headers = {
             **self.headers,
-            'Content-Length': str(len(data)),
-            'Content-Type': 'application/json',
+            'Content-Length': '0',
             'Init-Data': query
         }
         while True:
             try:
                 async with ClientSession(timeout=ClientTimeout(total=20)) as session:
-                    async with session.post(url=url, headers=headers, data=data, ssl=False) as response:
+                    async with session.post(url=url, headers=headers, ssl=False) as response:
                         if response.status == 409:
                             error_tile_start = await response.json()
                             if error_tile_start['error'] == 'An active game session already exists':
