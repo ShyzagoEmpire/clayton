@@ -374,7 +374,6 @@ class Clayton:
                         tile_start = await response.json()
                         if tile_start['message'] == 'Game started successfully':
                             await self.tile_save(query=query)
-                            await asyncio.sleep(2)
             except ClientResponseError as error:
                 return self.print_timestamp(f"{Fore.RED + Style.BRIGHT}[ An HTTP Error Occurred While Tile Start: {str(error)} ]{Style.RESET_ALL}")
             except Exception as error:
