@@ -34,7 +34,6 @@ class Clayton:
             'Cache-Control': 'no-cache',
             'Host': 'tonclayton.fun',
             'Pragma': 'no-cache',
-            'Priority': 'u=3, i',
             'Sec-Fetch-Dest': 'empty',
             'Sec-Fetch-Mode': 'cors',
             'Sec-Fetch-Site': 'same-origin',
