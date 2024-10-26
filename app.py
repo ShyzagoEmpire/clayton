@@ -351,7 +351,7 @@ class Clayton:
         except Exception as error:
             return self.print_timestamp(f"{Fore.RED + Style.BRIGHT}[ An Unexpected Error Occurred While Stack End: {str(error)} ]{Style.RESET_ALL}")
 
-    async def tile_start(self, query: str, score: int):
+    async def tile_start(self, query: str):
         url = 'https://tonclayton.fun/api/game/start'
         data = json.dumps({'score':score,'multiplier':1})
         headers = {
