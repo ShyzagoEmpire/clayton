@@ -368,9 +368,7 @@ class Clayton:
                             if error_tile_start['error'] == 'No game attempts available':
                                 return self.print_timestamp(f"{Fore.RED + Style.BRIGHT}[ No 1024 Attempts Available ]{Style.RESET_ALL}")
                         response.raise_for_status()
-                        tile_start = await response.json()
-                        if tile_start['message'] == 'Game started successfully':
-                            await self.tile_save(query=query)
+                        await self.tile_save(query=query)
             except ClientResponseError as error:
                 return self.print_timestamp(f"{Fore.RED + Style.BRIGHT}[ An HTTP Error Occurred While Tile Start: {str(error)} ]{Style.RESET_ALL}")
             except Exception as error:
@@ -388,16 +386,8 @@ class Clayton:
         try:
             async with ClientSession(timeout=ClientTimeout(total=20)) as session:
                 async with session.post(url=url, headers=headers, data=data, ssl=False) as response:
-                    if response.status == 500:
-                        error_stack_end = await response.json()
-                        if error_stack_end['error'] == 'redis: nil':
-                            return self.print_timestamp(f"{Fore.YELLOW + Style.BRIGHT}[ Error Redis: Nil While Tile Save ]{Style.RESET_ALL}")
-                        elif error_stack_end['error'] == 'Internal Server Error':
-                            return self.print_timestamp(f"{Fore.YELLOW + Style.BRIGHT}[ Internal Server Error While Tile Save ]{Style.RESET_ALL}")
                     response.raise_for_status()
-                    tile_save = await response.json()
-                    if tile_save['message'] == 'MaxTile saved successfully':
-                        return await self.tile_over(query=query)
+                    return await self.tile_over(query=query)
         except ClientResponseError as error:
             return self.print_timestamp(f"{Fore.RED + Style.BRIGHT}[ An HTTP Error Occurred While Tile Save: {str(error)} ]{Style.RESET_ALL}")
         except Exception as error:
