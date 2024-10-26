@@ -33,6 +33,8 @@ class Clayton:
             'Accept-Language': 'en-GB,en-US;q=0.9,en;q=0.8',
             'Cache-Control': 'no-cache',
             'Host': 'tonclayton.fun',
+            'Origin': 'https://tonclayton.fun',
+            'Referer': 'https://tonclayton.fun/games',
             'Pragma': 'no-cache',
             'Sec-Fetch-Dest': 'empty',
             'Sec-Fetch-Mode': 'cors',
@@ -361,11 +363,7 @@ class Clayton:
             try:
                 async with ClientSession(timeout=ClientTimeout(total=20)) as session:
                     async with session.post(url=url, headers=headers, ssl=False) as response:
-                        if response.status == 409:
-                            error_tile_start = await response.json()
-                            if error_tile_start['error'] == 'An active game session already exists':
-                                return self.print_timestamp(f"{Fore.RED + Style.BRIGHT}[ An Active Game Session Already Exists While Tile Start ]{Style.RESET_ALL}")
-                        elif response.status == 500:
+                        if response.status == 500:
                             error_tile_start = await response.json()
                             if error_tile_start['error'] == 'No game attempts available':
                                 return self.print_timestamp(f"{Fore.RED + Style.BRIGHT}[ No 1024 Attempts Available ]{Style.RESET_ALL}")
@@ -414,22 +412,23 @@ class Clayton:
             'Content-Type': 'application/json',
             'Init-Data': query
         }
-        try:
-            async with ClientSession(timeout=ClientTimeout(total=20)) as session:
-                async with session.post(url=url, headers=headers, data=data, ssl=False) as response:
-                    if response.status == 500:
-                        error_tile_over = await response.json()
-                        if error_tile_over['error'] == 'redis: nil':
-                            return self.print_timestamp(f"{Fore.YELLOW + Style.BRIGHT}[ Error Redis: Nil While Tile Over ]{Style.RESET_ALL}")
-                        elif error_tile_over['error'] == 'Internal Server Error':
-                            return self.print_timestamp(f"{Fore.YELLOW + Style.BRIGHT}[ Internal Server Error While Tile Over ]{Style.RESET_ALL}")
-                    response.raise_for_status()
-                    tile_over = await response.json()
-                    return self.print_timestamp(f"{Fore.GREEN + Style.BRIGHT}[ You\'ve Got {tile_over['earn']} Clayton Points & {tile_over['xp_earned']} XP From 1024 ]{Style.RESET_ALL}")
-        except ClientResponseError as error:
-            return self.print_timestamp(f"{Fore.RED + Style.BRIGHT}[ An HTTP Error Occurred While Tile Over: {str(error)} ]{Style.RESET_ALL}")
-        except Exception as error:
-            return self.print_timestamp(f"{Fore.RED + Style.BRIGHT}[ An Unexpected Error Occurred While Tile Over: {str(error)} ]{Style.RESET_ALL}")
+        while True:
+            try:
+                async with ClientSession(timeout=ClientTimeout(total=20)) as session:
+                    async with session.post(url=url, headers=headers, data=data, ssl=False) as response:
+                        if response.status == 500:
+                            error_tile_over = await response.json()
+                            if error_tile_over['error'] == 'redis: nil':
+                                self.print_timestamp(f"{Fore.YELLOW + Style.BRIGHT}[ Error Redis: Nil While Tile Over ]{Style.RESET_ALL}")
+                            elif error_tile_over['error'] == 'Internal Server Error':
+                                return self.print_timestamp(f"{Fore.YELLOW + Style.BRIGHT}[ Internal Server Error While Tile Over ]{Style.RESET_ALL}")
+                        response.raise_for_status()
+                        tile_over = await response.json()
+                        return self.print_timestamp(f"{Fore.GREEN + Style.BRIGHT}[ You\'ve Got {tile_over['earn']} Clayton Points & {tile_over['xp_earned']} XP From 1024 ]{Style.RESET_ALL}")
+            except ClientResponseError as error:
+                return self.print_timestamp(f"{Fore.RED + Style.BRIGHT}[ An HTTP Error Occurred While Tile Over: {str(error)} ]{Style.RESET_ALL}")
+            except Exception as error:
+                return self.print_timestamp(f"{Fore.RED + Style.BRIGHT}[ An Unexpected Error Occurred While Tile Over: {str(error)} ]{Style.RESET_ALL}")
 
     async def main(self):
         while True:
