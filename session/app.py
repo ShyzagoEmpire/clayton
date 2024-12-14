@@ -437,12 +437,12 @@ class Clayton:
                             if tasks is not None:
                                 for task in tasks:
                                     if task['is_completed'] and not task['is_claimed']:
-                                        await self.tasks_claim(query=query, task_id=task['task_id'], task_title=task['task']['title'], task_reward_tokens=task['task']['reward_tokens'], task_game_attempts=task['task']['game_attempts'])
+                                        await self.tasks_claim(query=query, task_id=task['task_id'], task_title=task['task']['title'])
                                     if not task['is_completed']:
                                         if task['task']['requires_check']:
-                                            await self.tasks_check(query=query, task_id=task['task_id'], task_title=task['task']['title'], task_reward_tokens=task['task']['reward_tokens'], task_game_attempts=task['task']['game_attempts'])
+                                            await self.tasks_check(query=query, task_id=task['task_id'], task_title=task['task']['title'])
                                         else:
-                                            await self.tasks_complete(query=query, task_id=task['task_id'], task_title=task['task']['title'], task_reward_tokens=task['task']['reward_tokens'], task_game_attempts=task['task']['game_attempts'])
+                                            await self.tasks_complete(query=query, task_id=task['task_id'], task_title=task['task']['title'])
                         await self.user_achievements_get(query=query)
 
                 if settings.AUTO_GAMES_STACK:
