@@ -368,7 +368,7 @@ class Clayton:
                     if response.status == 500:
                         error_stack_update = await response.json()
                         if error_stack_update['error'] == 'score change error':
-                            return await self.stack_end(query=query, score=score)
+                            return await self.stack_end(query=query)
                     response.raise_for_status()
                     stack_update = await response.json()
                     if stack_update['message'] == 'Score updated successfully':
