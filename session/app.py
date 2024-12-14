@@ -66,7 +66,7 @@ class Clayton:
                 except (AuthKeyUnregisteredError, UnauthorizedError, UserDeactivatedBanError, UserDeactivatedError) as error:
                     raise error
 
-                me = await client.me()
+                me = await client.get_me()
                 name = me.username if me.username is not None else me.first_name
 
                 webapp_response: AppWebViewResultUrl = await client(messages.RequestAppWebViewRequest(
