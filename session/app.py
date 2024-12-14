@@ -342,7 +342,7 @@ class Clayton:
                         if 'session_id' in stack_start:
                             self.print_timestamp(f"{Fore.YELLOW + Style.BRIGHT}[ Stack Started With Session ID: {stack_start['session_id']} ]{Style.RESET_ALL}")
                             score = 10
-                            while score <= 90:
+                            while score <= 100:
                                 await self.stack_update(query=query, score=score)
                                 score += 10
             except ClientResponseError as error:
@@ -378,8 +378,8 @@ class Clayton:
         except Exception as error:
             return self.print_timestamp(f"{Fore.RED + Style.BRIGHT}[ Exception Stack Update: {str(error)} ]{Style.RESET_ALL}")
 
-    async def stack_end(self, query: str, score: int):
-        data = json.dumps({'score':score,'multiplier':3})
+    async def stack_end(self, query: str):
+        data = json.dumps({'score':99,'multiplier':3})
         headers = {
             **self.headers,
             'Content-Length': str(len(data)),
